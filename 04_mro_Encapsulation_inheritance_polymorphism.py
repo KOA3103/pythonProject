@@ -17,6 +17,30 @@ class Student:
                f"Курсы в процессе изучения: {', '.join(self.courses_in_progress)}\n " \
                f"Завершенные курсы: {', '.join(self.finished_courses)}"
 
+    def __eq__(self, other):
+        if not isinstance(other, Student):
+            return "Ошибка! Сравнение двух объектов разных классов!"
+        if self.average_grade_student() == other.average_grade_student():
+            return f" Средняя оценка студента {self.name} {self.surname} равна средней оценке студента {other.name} {other.surname}"
+        else:
+            return f" Средняя оценка студента {self.name} {self.surname} не равна средней оценке студента {other.name} {other.surname}"
+
+    def __le__(self, other):
+        if not isinstance(other, Student):
+            return "Ошибка! Сравнение двух объектов разных классов!"
+        if self.average_grade_student() <= other.average_grade_student():
+            return f" Средняя оценка студента {self.name} {self.surname} меньше или равна средней оценке студента {other.name} {other.surname}"
+        else:
+            return f" Средняя оценка студента {self.name} {self.surname} больше средней оценке студента {other.name} {other.surname}"
+
+    def __gt__(self, other):
+        if not isinstance(other, Student):
+            return "Ошибка! Сравнение двух объектов разных классов!"
+        if self.average_grade_student() > other.average_grade_student():
+            return f" Средняя оценка студента {self.name} {self.surname} больше средней оценке студента {other.name} {other.surname}"
+        else:
+            return f" Средняя оценка студента {self.name} {self.surname} меньше или равно средней оценке студента {other.name} {other.surname}"
+
     def add_finished_courses(self, course_name):
         self.finished_courses.append(course_name)
 
@@ -68,6 +92,32 @@ class Lecturer(Mentor):
         return f"Лектор\n Имя: {self.name}\n Фамилия: {self.surname}\n " \
                f"Средняя оценка за курсы: {self.average_grade_lecturs()}\n " \
                f"Препадает на курсах: {', '.join(self.leads_courses)}"
+
+    def __eq__(self, other):
+        if not isinstance(other, Lecturer):
+            return "Ошибка! Сравнение двух объектов разных классов!"
+        if self.average_grade_lecturs() == other.average_grade_lecturs():
+            return f" Средняя оценка лектора {self.name} {self.surname} " \
+                   f"равна средней оценке лектора {other.name} " \
+                   f"{other.surname}"
+        else:
+            return f" Средняя оценка лектора {self.name} {self.surname}" \
+                   f" не равна средней оценке лектора " \
+                   f"{other.name} {other.surname}"
+
+    def __le__(self, other):
+        if not isinstance(other, Lecturer):
+            return "Ошибка! Сравнение двух объектов разных классов!"
+        if self.average_grade_lecturs() <= other.average_grade_lecturs():
+            return f" Средняя оценка лектора {self.name} {self.surname} меньше или равна средней оценке лектора {other.name} {other.surname}"
+        else:
+            return f" Средняя оценка лектора {self.name} {self.surname} больше средней оценке лектора {other.name} {other.surname}"
+
+    def __gt__(self, other):
+        if not isinstance(other, Lecturer):
+            return "Ошибка! Сравнение двух объектов разных классов!"
+        if self.average_grade_lecturs() > other.average_grade_lecturs():
+            return f" Средняя оценка лектора {self.name} {self.surname} больше или равна средней оценке лектора {other.name} {other.surname}"
 
     def add_courses(self, course_name):
         self.leads_courses.append(course_name)
@@ -148,26 +198,23 @@ reviewer_2.courses_attached.append("Git")
 # Выбраному студенту student_1 по опр.курсу ставим отметку, от reviewer_1.
 reviewer_1.rate_student(student_1, "Python", 10)
 reviewer_1.rate_student(student_1, "Git", 5)
-
 # Выбраному студенту student_2 по опр.курсу Python ставим отметку, от reviewer_1.
 reviewer_1.rate_student(student_2, "Python", 6)
 reviewer_1.rate_student(student_2, "Git", 8)
-
 # Выбраному студенту student_1 по опр.курсу ставим отметку, от reviewer_2.
 reviewer_2.rate_student(student_1, "Git", 5)
-
 # Выбраному студенту student_2 по опр.курсу Git ставим отметку, от reviewer_2.
 reviewer_2.rate_student(student_2, "Git", 9)
 
 # От student_1 выставляем оценку lecturer_1.
-student_1.rate_lecturer(lecturer_1, "Git", 9)
-student_1.rate_lecturer(lecturer_1, "Python", 8)
+student_1.rate_lecturer(lecturer_1, "Git", 10)
+student_1.rate_lecturer(lecturer_1, "Python", 10)
 # От student_1 выставляем оценку lecturer_2.
 student_1.rate_lecturer(lecturer_2, "Python", 10)
 student_1.rate_lecturer(lecturer_2, "Git", 10)
 
 # От student_2 выставляем оценку lecturer_1.
-student_2.rate_lecturer(lecturer_1, "Git", 3)
+student_2.rate_lecturer(lecturer_1, "Git", 10)
 student_2.rate_lecturer(lecturer_1, "Python", 5)
 # От student_1 выставляем оценку lecturer_2.
 student_2.rate_lecturer(lecturer_2, "Python", 6)
@@ -229,3 +276,15 @@ print('-' * 25)
 print(average_rating(Lecturer.list_all_lecturer_grades, 'Python'))
 print(average_rating(Lecturer.list_all_lecturer_grades, 'Git'))
 print(average_rating(Lecturer.list_all_lecturer_grades, 'JS'))
+
+print('-' * 25)
+# Проверка на равенства между собой студентов по средней оценке за домашние задания.
+print(student_1 == student_2)
+print(student_1 <= student_2)
+print(student_1 > student_1)
+
+print('-' * 25)
+# Проверка на равенства между собой лекторов по средней оценке за лекции.
+print(lecturer_1 == lecturer_2)
+print(lecturer_1 <= lecturer_2)
+print(lecturer_1 > lecturer_2)
