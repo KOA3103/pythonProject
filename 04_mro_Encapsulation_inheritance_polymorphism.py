@@ -278,6 +278,7 @@ def average_rating(persons, course):
         existence_course += 1
         for person in persons:
             if course in person.grades:
+                # list_grades.extend(person.grades.get(course, []))
                 for key_dic, Value_dic in person.grades.items():
                     if course == key_dic:
                         list_grades += Value_dic
