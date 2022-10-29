@@ -1,8 +1,8 @@
 # Показ текущей директории.
-import os
-print("Current Work Directory =>:", os.getcwd())
-from pathlib import Path
-print("Current Work Directory:", Path.cwd())
+# import os
+# print("Current Work Directory =>:", os.getcwd())
+# from pathlib import Path
+# print("Current Work Directory:", Path.cwd())
 
 # 1. Создаём новую директорию в текущей.
 # os.mkdir("test_folder_0")
@@ -109,9 +109,218 @@ print("Current Work Directory:", Path.cwd())
 
 # 9 Чтение файлов
 # 9.1 Чтение всех текстов
-with open("test_folder_1/folder1_1/5.txt", 'r') as file:
-    print(file.read())
+# with open("test_folder_1/folder1_1/5.txt", 'r') as file:
+#     print(file.read())
 # 9.2 Чтение построчно
-with open("test_folder_1/folder1_1/5.txt", 'r') as file:
-    for i, line in enumerate(file, 2):
-        print(f"* Reading line № {i}: {line}")
+# with open("test_folder_1/folder1_1/5.txt", 'r') as file:
+#     for i, line in enumerate(file, 2):
+#         print(f"* Reading line № {i}: {line}")
+
+
+
+# Шаг 1 - Открыть файл
+# file = open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\5.txt')
+# print(type(file), "\n")
+
+# Шаг 2 - Создем переменную data, читаем файл целиком, метод .read().
+# data = file.read()
+# print(data)
+# print(type(data), "\n")
+
+# Шаг 3 - Закрыть файл
+# file.close()
+
+# Проверим остались ли данные в памяти
+# print(f"То что у нас в памяти - {data}")
+
+
+def is_closed_or_not(file_):
+    """
+    Функция принимает объект файл и проверяет его состояние
+    """
+    if file_.closed:
+        print('Файл закрыт')
+    else:
+        print('Файл открыт')
+
+# Эквивалентно
+# f = open("data.txt") == with open("data.txt") as f
+
+
+# Пример 1 - Открыть файл, прочитать, закрыть автоматом - with.
+# with open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\5.txt', encoding="utf-8") as f:
+#     print(type(f))
+#     data = f.read(10)
+#     data_2 = f.read(15)
+#     is_closed_or_not(f)
+#     print(data)
+#     print(data_2)
+#     print(data[:9])
+#     print(data[2:7])
+
+# is_closed_or_not(f)
+
+# Обработка исключений, ZeroDivisionError: division by zero.
+# with open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\5.txt', encoding="utf-8") as f:
+    # data = f.read()
+    # is_closed_or_not(f)
+    # 1 / 0
+
+# Обработка исключений.
+# try:
+#     with open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\5.txt', encoding="utf-8") as f:
+#         data = f.read()
+#         is_closed_or_not(f)
+#         1 / 0
+# except ZeroDivisionError:
+#     is_closed_or_not(f)
+
+# Запись в файл.
+# with open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\12.txt', "w", encoding="utf-8") as f:
+#     f.write("1. Python is cool!\n")
+#     f.write("2. I love Python\n")
+#     f.write("3. I'm a reach man.")
+#     is_closed_or_not(f)
+# is_closed_or_not(f)
+
+# Дополнить файл
+# with open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\12.txt', "a", encoding="utf-8") as f:
+#     data = "\n123456789\n"
+#     data_2 = "!@#$%^&*()_+"
+#     f.write(data)
+#     f.write(data_2)
+
+# Дополнить файл
+# with open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\12.txt', "r", encoding="utf-8") as f:
+#     lines = f.readline()
+#     print(lines)
+#     lines = f.readlines()
+#     print(lines)
+
+# Запись в файл спмска построчно.
+# with open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\123.txt', "w", encoding="utf-8") as f:
+#     lines = ["1.First", "\n2.Second", "\n3.Third"]
+#     f.writelines(lines)
+#     print(lines)
+
+# Пример 1 - читаем файл целиком
+# with open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\12.txt') as f:
+#     data = f.read()
+#     print(type(data))
+#     print(data)
+
+
+# Пример 2 - читаем построчно
+# with open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\12.txt') as f:
+#     print(f.readline().strip())
+#     print(f.readline().strip())
+#     print(f.readline().strip())
+#     print(f.readline() != "")
+#     print(f.readline() is None)
+
+
+# Пример 3 - читаем строки (все) - читается все,  но записывается в список
+# with open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\12.txt') as f:
+#     lines = f.readlines()
+#     print(type(lines))
+#     print(len(lines))
+#     print(lines[1])
+
+
+# Пример 4 - читаем итеративно
+# with open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\12.txt') as f:
+#     for line in f:
+#         print(line.strip())
+
+# Пример 1 - попытка записать в файл который открыт только на чтение (io.UnsupportedOperation: not writable).
+# with open('test_folder_1/folder1_1/hello3.txt') as f:
+#     f.write('Привет, мир!')
+
+# Пример 2 - попытка записать в файл который открыт на запись
+# with open('test_folder_1/folder1_1/hello3.txt', "w") as f:
+#     f.write('Привет, мир!')
+
+# Пример 3 - попытка прочитать в файл который открыт на запись (io.UnsupportedOperation: not readable).
+# with open('test_folder_1/folder1_1/hello3.txt', 'w') as f:
+#     print(f.read())
+
+# Пример 4 - попытка прочитать в файл который открыт на запись И чтение. wr
+# with open('data_3.txt', 'wr') as f:
+#     # Ошибка (ValueError: must have exactly one of create/read/write/append mode).
+#     print(f.read())
+
+# Пример 5 - попытка записать две строки но в разных сессиях в файл который открыт на запись.
+# with open('test_folder_1/folder1_1/hello3.txt', 'w') as f:
+#     f.write('Первая строка!')
+# with open('test_folder_1/folder1_1/hello3.txt', 'w') as f:
+#     f.write('Вторая строка!')
+
+#  Пример 6 - Дозапись файла
+# with open('test_folder_1/folder1_1/hello3.txt', 'a') as f:
+#     f.write('Первая строка! \n')
+# with open('test_folder_1/folder1_1/hello3.txt', 'a') as f:
+#     f.write('Вторая строка! \n')
+
+# Пример 5 - Битовое чтение
+# with open('test_folder_1/folder1_1/hello3.txt', 'rb') as f:
+#     data = f.read()
+#     print(type(data))
+#     print(data)
+
+
+# Пример 6 - Битовая чтение строки
+# with open('test_folder_1/folder1_1/hello3.txt', 'rb') as f:
+#     print(f.readline())
+
+import os
+import time
+
+# Пример 1 - получение пути от корня файловой системы к текущему каталогу
+# print("\nПример 1 - получение пути от корня файловой системы к текущему каталогу")
+# print("==> ", os.getcwd())
+
+# Пример 2 - построение пути к файлу
+# print("\nПример 2 - построение пути к файлу")
+# file_path = os.path.join(os.getcwd(), 'd%^^^^^^H')
+# print("==> ", file_path)
+
+# # Пример 3 - Запись и чтение в файл без указания пути (относительный путь - т.к. относительно текущей директории)
+# with open('test.txt', 'w') as f:
+#     f.write(f'{time.time()}')
+# with open('test.txt', 'r') as f:
+#     print(f.read())
+
+# Пример 4 - Запись и чтение в файл с указание пути (абсолютный путь)
+# file_path = os.path.join(os.ge
+
+# Пример 5 - Вложенный with, пока менеджер контекста не закрыт, мы не может получить результат работы над файлом
+# with open('file.txt', 'w') as f:
+#     f.write('898-999-998-223')
+#     with open('file.txt') as f1:
+#         print(f1.read())
+# with open('file.txt') as f1:
+#     print(f1.read())
+
+# Пример 1 - Записываем файл в кодировке utf-8 (linux)
+# with open('utf.txt', 'w', encoding='utf-8') as f:
+#     f.write('Привет, мир!')
+
+# Пример 2 - Записываем файл в кодировке cp1251 (windows)
+# with open('cp.txt', 'w', encoding='cp1251') as f:
+#     f.write('Привет, мир!')
+
+# Пример 3 - Читаем файлы в байтах чтобы показать разницу в кодировках
+# with open('cp.txt', 'rb') as f:
+#     print("cp1251 ==> ", f.read())
+# with open('utf.txt', 'rb') as f:
+#     print("utf-8 ==> ", f.read())
+
+# Пример 4 - Чтение файла с указанием неверной кодировки
+# with open('cp.txt', 'r') as f:
+#     print(f.read())
+
+# Пример 5 - Чтение файла с указанием верной кодировки
+# with open('cp.txt', 'r', encoding='cp1251') as f:
+#     print(f.read())
+
+
