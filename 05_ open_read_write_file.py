@@ -10,7 +10,6 @@ with open(file_path, 'r') as f:
     items = []
     dish = True
     while dish:
-
         all_list_ingr_dic = list()
         dish_name = ''
         str_line = f.readline()
@@ -44,22 +43,26 @@ with open(file_path, 'r') as f:
             dish = False
 
 pprint(cook_book)
+
+
 def get_shop_list_by_dishes(dishes, person_count):
     ingredient_list = dict()
-    for dish_name in dishes:  # итерируем список полученных блюд
+    for dish_name in dishes:
         if dish_name in cook_book:
-            for ingredient in cook_book[dish_name]:  # итерируем ингридиенты в блюде
+            for ingredient in cook_book[dish_name]:
                 measure_quantity = dict()
                 if ingredient['ingredient_name'] not in ingredient_list:
                     measure_quantity['measure'] = ingredient['measure']
                     measure_quantity['quantity'] = ingredient['quantity'] * person_count
                     ingredient_list[ingredient['ingredient_name']] = measure_quantity
                 else:
-                    ingredient_list[ingredient['ingredient_name']]['quantity'] = ingredient_list[ingredient['ingredient_name']]['quantity'] + \
-                                                                     ingredient['quantity'] * person_count
+                    ingredient_list[ingredient['ingredient_name']]['quantity'] = \
+                    ingredient_list[ingredient['ingredient_name']]['quantity'] + \
+                    ingredient['quantity'] * person_count
 
         else:
             print(f'\n"Такого блюда нет в списке!"\n')
     return ingredient_list
 
-pprint(get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 3))
+
+pprint(get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2))
