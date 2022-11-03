@@ -60,10 +60,8 @@ def get_shop_list_by_dishes(dishes, person_count):
           ingredient_list[ingredient['ingredient_name']]['quantity'] = \
           ingredient_list[ingredient['ingredient_name']]['quantity'] + \
           ingredient['quantity'] * person_count
-
     else:
       return f'{dish_name} нет в списке блюд!'
   return ingredient_list
-
 
 pprint(get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2))
