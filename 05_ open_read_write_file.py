@@ -1,21 +1,29 @@
-import os, sys
-# -*- coding: utf8 -*-
+# -*- coding: cp1251 -*-
+import os
+import time
+from pprint import pprint
 
+file_path = os.path.join(os.getcwd(), 'recipes.txt')
 cook_book = {}
-with open('recipes.txt', 'r') as f:
+with open(file_path, 'r') as f:
     key_list = ['ingredient_name', 'quantity', 'measure']
-    ingredients = {}
     items = []
-    len_items = 0
     dish = True
     while dish:
+
         all_list_ingr_dic = list()
-        srt_line = f.readline()
+        dish_name = ''
+        str_line = f.readline()
+        for name in str_line:
+            if name == '\n':
+                break
+            else:
+                dish_name += name
         number = int(f.readline())
         ingredient_item = True
         while ingredient_item:
+            ingredients = {}
             line = f.readline().split('|')
-            len_items += 1
             for item in line:
                 if item == str():
                     break
@@ -27,15 +35,31 @@ with open('recipes.txt', 'r') as f:
             if ingredient_item == False or item == str():
                 break
             else:
-                ingredients = zip(key_list, items)
+                ingredients['ingredient_name'], ingredients['quantity'], ingredients['measure'] = items
+                ingredients['quantity'] = int(ingredients['quantity'])
                 items.clear()
                 all_list_ingr_dic.append(ingredients)
-            cook_book[srt_line] = all_list_ingr_dic
+            cook_book[dish_name] = all_list_ingr_dic
         if item == str():
             dish = False
 
+pprint(cook_book)
+def get_shop_list_by_dishes(dishes, person_count):
+    ingredient_list = dict()
+    for dish_name in dishes:  # итерируем список полученных блюд
+        if dish_name in cook_book:
+            for ingredient in cook_book[dish_name]:  # итерируем ингридиенты в блюде
+                measure_quantity = dict()
+                if ingredient['ingredient_name'] not in ingredient_list:
+                    measure_quantity['measure'] = ingredient['measure']
+                    measure_quantity['quantity'] = ingredient['quantity'] * person_count
+                    ingredient_list[ingredient['ingredient_name']] = measure_quantity
+                else:
+                    ingredient_list[ingredient['ingredient_name']]['quantity'] = ingredient_list[ingredient['ingredient_name']]['quantity'] + \
+                                                                     ingredient['quantity'] * person_count
 
-    print(cook_book)
+        else:
+            print(f'\n"Такого блюда нет в списке!"\n')
+    return ingredient_list
 
-
-    print('\n', f.readline(30))
+pprint(get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 3))
