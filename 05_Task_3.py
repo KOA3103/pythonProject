@@ -1,4 +1,3 @@
-import os
 
 def united_file_write(file_name, file):
     united_file.write(file_name + '\n')
