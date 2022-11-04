@@ -7,7 +7,6 @@ def united_file_write(file_name, file):
     united_file.write('\n')
     return
 
-united_file_name = "rewrite_file.txt"
 with open('1.txt', 'r', encoding='utf-8') as f1:
     file1 = f1.readlines()
 with open('2.txt', 'r', encoding='utf-8') as f2:
