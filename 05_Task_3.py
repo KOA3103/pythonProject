@@ -1,45 +1,36 @@
+import os
+from pathlib import Path
 
-def united_file_write(file_name, file):
-    united_file.write(file_name + '\n')
-    united_file.write(str(len(file)) + '\n')
-    united_file.writelines(file)
-    united_file.write('\n')
-    return
+# Берем файлы из директории.
+source_path = os.path.join(Path.cwd())
+# Созданный файл помещаем в дирекиторию, под именем 'united_file_name.txt'.
+target_path = os.path.join(Path.cwd(), 'united_file_name.txt')
 
-with open('1.txt', 'r', encoding='utf-8') as f1:
-    file1 = f1.readlines()
-with open('2.txt', 'r', encoding='utf-8') as f2:
-    file2 = f2.readlines()
-with open('3.txt', 'r', encoding='utf-8') as f3:
-    file3 = f3.readlines()
-with open('united_file_name.txt', 'w', encoding='utf-8') as united_file:
-    if len(file1) < len(file2) < len(file3):
-        united_file_write('1.txt', file1)
-        united_file_write('2.txt', file2)
-        united_file_write('3.txt', file3)
 
-    elif len(file1) < len(file3) < len(file2):
-        united_file_write('1.txt', file1)
-        united_file_write('3.txt', file3)
-        united_file_write('2.txt', file2)
+def gets_files_for_analysis(source_path=Path.cwd()):
+    list_all_files = list()
+    files_in_queue = list(Path(source_path).glob('?.txt'))  # '*'-все файлы, '?'-файл с названием в один символ.
+    for file_name in files_in_queue:
+        list_file = list()
+        with open(file_name.name, 'r', encoding='utf-8') as file:
+            file = file.readlines()
+            list_file.append(len(file))
+            list_file.append([file_name.name])
+            list_file.append(file)
+            list_all_files.append(list_file)
+    list_all_files = sorted(list_all_files)
+    return list_all_files
 
-    elif len(file2) < len(file1) < len(file3):
-        united_file_write('2.txt', file2)
-        united_file_write('1.txt', file1)
-        united_file_write('3.txt', file3)
 
-    elif len(file2) < len(file3) < len(file1):
-        united_file_write('2.txt', file2)
-        united_file_write('3.txt', file3)
-        united_file_write('1.txt', file1)
+with open(target_path, 'w', encoding='utf-8') as united_file:
+    for _ in gets_files_for_analysis(source_path):
+        articles = ''
+        file_name = _[1][0]
+        quantity_of_strings = _[0]
+        for _i in _[2]:
+            articles += _i
+        united_file.write(f'\n{file_name}\n{quantity_of_strings}\n{articles}\n')
+        print(f'\n{file_name}\n{quantity_of_strings}\n{articles}')
 
-    elif len(file3) < len(file1) < len(file2):
-        united_file_write('3.txt', file3)
-        united_file_write('1.txt', file1)
-        united_file_write('2.txt', file2)
-
-    elif len(file3) < len(file2) < len(file1):
-        united_file_write('3.txt', file3)
-        united_file_write('2.txt', file2)
-        united_file_write('1.txt', file1)
-
+print(f'Файлы были взяты из директории => {source_path}')
+print(f'Созданный файл был помещен в дирекиторию => {target_path}')
