@@ -1,11 +1,13 @@
 # Показ текущей директории.
-# import os
+import os
 # print("Current Work Directory =>:", os.getcwd())
-# from pathlib import Path
+from pathlib import Path
 # print("Current Work Directory:", Path.cwd())
 
 # 1. Создаём новую директорию в текущей.
-# os.mkdir("test_folder_0")
+# os.mkdir("1.txt")
+# os.mkdir("2.txt")
+# os.mkdir("3.txt")
 # print("Is the directory there:", os.path.exists("test_folder"))
 # 1.1 Создаём новую директорию в конкретно заданном каталоге
 # os.mkdir(r"C:\Users\KOA\Documents\CRYPTO")
@@ -17,14 +19,15 @@
 # Path("test_folder_2/folder2_1").mkdir(parents=True, exist_ok=True)
 
 # 2. Создание и запись новых данных в созданный файл.
-# for files in range(6):
-#     # print(files)
-#     file_name = "file_"+str(files) + '.txt'
+# for files in range(3):
+    # print(files)
+    # file_name = str(files) + '.txt'
 #     # 2.1 Создание файла.
 #     with open(f"test_folder_2/folder2_1/{file_name}", 'w') as f:
+#     with open(file_name, 'w') as f:
 #         text_to_write = f"file {file_name} - Hello Files From Writing"
-#         f.write(text_to_write)
-#         print(f"* After creating file {os.path.exists('test_folder_2/folder2_1/hello3.txt')}")
+        # f.write(text_to_write)
+        # print(f"* After creating file {os.path.exists('test_folder_2/folder2_1/hello3.txt')}")
 
 
 # 3.1 Удаление файла. При использовании модуля pathlib за удаление файла отвечает метод unlink(),
@@ -49,7 +52,7 @@
 # files = list(glob('t*'))
 # print("Files starting with t:", files)
 
-# 5. Перемещение.
+# upload_folder. Перемещение.
 # target_folder = Path("test_folder_0")
 # target_folder.mkdir(parents=True,exist_ok=True)
 # source_folder = Path('target_folder')
@@ -62,23 +65,23 @@
 #     print("Target File Exists:", target_path.exists())
 #     txt_file.rename(target_path)
 #     print("Target File Exists:", target_path.exists(), '\n')
-
+#
 # 6. Копирование файлов.
 # import shutil
 #
-# source_file = "test_folder_0/5.txt"
-# target_file = "test_folder_1/folder1_1/5.txt"
+# source_file = "test_folder_0/upload_folder"
+# target_file = "test_folder_1/folder1_1/upload_folder"
 # target_file_path = Path(target_file)
 # print("* Before copying, file exists:", target_file_path.exists())
 # shutil.copy(source_file, target_file)
 # print("* After copying, file exists:", target_file_path.exists())
-
+#
 # 7. Проверка директории или файла
 # exists() в модуле os
-# print(os.path.exists('test_folder_1/folder1_1/5.txt'))
+# print(os.path.exists('test_folder_1/folder1_1/upload_folder'))
 # 7.1 эта функция доступна в обоих модулях, os и pathlib, но с разными сигнатурами.
 # exists() в модуле pathlib
-# print(Path('test_folder_1/folder1_1/5.txt').exists())
+# print(Path('test_folder_1/folder1_1/upload_folder').exists())
 
 # 7.2 Проверяем, является ли путь директорией.
 # print(os.path.isdir('test_folder_1/folder1_1'))
@@ -86,19 +89,19 @@
 
 # 7.3 Проверяем, является ли путь файлом.
 # print(os.path.isfile('test_folder_1/folder1_1'))
-# print(Path('test_folder_1/folder1_1/5.txt').is_file())
+# print(Path('test_folder_1/folder1_1/upload_folder').is_file())
 
 # 8.1 Получение информации о файле.
-# for py_file in Path("test_folder_1/folder1_1").glob('*.txt'):
-#     print('Name with extension:', py_file.name)
-#     print('Name only:', py_file.stem)
+for py_file in Path(r'/pythonProject/upload_folder').glob('*.txt'):
+    print('Name with extension:', py_file.name)
+    print('Name only:', py_file.stem)
 # # 8.2 Узнать расширение файла.
 #     file_path = Path(py_file.name)
 #     print("File Extension:", file_path.suffix)
 
 # 8.3 Больше информации о файле, его размер и время изменения.
 # 8.3.1 Получаем объект st_stat из пути.
-# current_file_path = Path('test_folder_1/folder1_1/5.txt')
+# current_file_path = Path('test_folder_1/folder1_1/upload_folder')
 # file_stat = current_file_path.stat()
 # 8.3.2 Получаем информацию о размере файла:
 # print("File Size in Bytes:", file_stat.st_size)
@@ -108,18 +111,17 @@
 # print("When Most Recent Modification:", file_stat.st_mtime)
 
 # 9 Чтение файлов
-# 9.1 Чтение всех текстов
-# with open("test_folder_1/folder1_1/5.txt", 'r') as file:
+# 9.1 Чтение всего файла, его текстов.
+# with open("test_folder_1/folder1_1/upload_folder", 'r') as file:
 #     print(file.read())
 # 9.2 Чтение построчно
-# with open("test_folder_1/folder1_1/5.txt", 'r') as file:
+# with open("test_folder_1/folder1_1/upload_folder", 'r') as file:
 #     for i, line in enumerate(file, 2):
 #         print(f"* Reading line № {i}: {line}")
 
 
-
 # Шаг 1 - Открыть файл
-# file = open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\5.txt')
+# file = open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\upload_folder')
 # print(type(file), "\n")
 
 # Шаг 2 - Создем переменную data, читаем файл целиком, метод .read().
@@ -134,21 +136,22 @@
 # print(f"То что у нас в памяти - {data}")
 
 
-def is_closed_or_not(file_):
-    """
-    Функция принимает объект файл и проверяет его состояние
-    """
-    if file_.closed:
-        print('Файл закрыт')
-    else:
-        print('Файл открыт')
+# def is_closed_or_not(file_):
+#     """
+#     Функция принимает объект файл и проверяет его состояние
+#     """
+#     if file_.closed:
+#         print('Файл закрыт')
+#     else:
+#         print('Файл открыт')
+#
 
 # Эквивалентно
 # f = open("data.txt") == with open("data.txt") as f
 
 
 # Пример 1 - Открыть файл, прочитать, закрыть автоматом - with.
-# with open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\5.txt', encoding="utf-8") as f:
+# with open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\upload_folder', encoding="utf-8") as f:
 #     print(type(f))
 #     data = f.read(10)
 #     data_2 = f.read(15)
@@ -161,14 +164,14 @@ def is_closed_or_not(file_):
 # is_closed_or_not(f)
 
 # Обработка исключений, ZeroDivisionError: division by zero.
-# with open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\5.txt', encoding="utf-8") as f:
-    # data = f.read()
-    # is_closed_or_not(f)
-    # 1 / 0
+# with open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\upload_folder', encoding="utf-8") as f:
+# data = f.read()
+# is_closed_or_not(f)
+# 1 / 0
 
 # Обработка исключений.
 # try:
-#     with open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\5.txt', encoding="utf-8") as f:
+#     with open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\upload_folder', encoding="utf-8") as f:
 #         data = f.read()
 #         is_closed_or_not(f)
 #         1 / 0
@@ -212,11 +215,11 @@ def is_closed_or_not(file_):
 
 # Пример 2 - читаем построчно
 # with open(r'C:\Users\KOA\PycharmProjects\pythonProject\test_folder_1\folder1_1\12.txt') as f:
-#     print(f.readline().strip())
-#     print(f.readline().strip())
-#     print(f.readline().strip())
-#     print(f.readline() != "")
-#     print(f.readline() is None)
+    # print(f.readline().strip())
+    # print(f.readline().strip())
+    # print(f.readline().strip())
+    # print(f.readline() != "")
+    # print(f.readline() is None)
 
 
 # Пример 3 - читаем строки (все) - читается все,  но записывается в список
@@ -249,7 +252,7 @@ def is_closed_or_not(file_):
 #     # Ошибка (ValueError: must have exactly one of create/read/write/append mode).
 #     print(f.read())
 
-# Пример 5 - попытка записать две строки но в разных сессиях в файл который открыт на запись.
+# Пример upload_folder - попытка записать две строки но в разных сессиях в файл который открыт на запись.
 # with open('test_folder_1/folder1_1/hello3.txt', 'w') as f:
 #     f.write('Первая строка!')
 # with open('test_folder_1/folder1_1/hello3.txt', 'w') as f:
@@ -261,7 +264,7 @@ def is_closed_or_not(file_):
 # with open('test_folder_1/folder1_1/hello3.txt', 'a') as f:
 #     f.write('Вторая строка! \n')
 
-# Пример 5 - Битовое чтение
+# Пример upload_folder - Битовое чтение
 # with open('test_folder_1/folder1_1/hello3.txt', 'rb') as f:
 #     data = f.read()
 #     print(type(data))
@@ -272,8 +275,6 @@ def is_closed_or_not(file_):
 # with open('test_folder_1/folder1_1/hello3.txt', 'rb') as f:
 #     print(f.readline())
 
-import os
-import time
 
 # Пример 1 - получение пути от корня файловой системы к текущему каталогу
 # print("\nПример 1 - получение пути от корня файловой системы к текущему каталогу")
@@ -293,7 +294,7 @@ import time
 # Пример 4 - Запись и чтение в файл с указание пути (абсолютный путь)
 # file_path = os.path.join(os.ge
 
-# Пример 5 - Вложенный with, пока менеджер контекста не закрыт, мы не может получить результат работы над файлом
+# Пример upload_folder - Вложенный with, пока менеджер контекста не закрыт, мы не может получить результат работы над файлом
 # with open('file.txt', 'w') as f:
 #     f.write('898-999-998-223')
 #     with open('file.txt') as f1:
@@ -319,8 +320,6 @@ import time
 # with open('cp.txt', 'r') as f:
 #     print(f.read())
 
-# Пример 5 - Чтение файла с указанием верной кодировки
+# Пример upload_folder - Чтение файла с указанием верной кодировки
 # with open('cp.txt', 'r', encoding='cp1251') as f:
-#     print(f.read())
-
-
+# print(f.read())

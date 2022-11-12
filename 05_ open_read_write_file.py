@@ -3,7 +3,7 @@ import os
 import time
 from pprint import pprint
 
-file_path = os.path.join(os.getcwd(), 'recipes.txt')
+file_path = os.path.join(os.getcwd(), 'html/recipes.txt')
 cook_book = {}
 with open(file_path, 'r') as f:
     key_list = ['ingredient_name', 'quantity', 'measure']
