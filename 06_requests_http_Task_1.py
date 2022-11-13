@@ -4,6 +4,10 @@ list_of_superhero = ['Hulk', 'Captain America', 'Thanos', 'Apocalypse', 'Iron Ma
 base_url = 'https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/all.json'
 sorted_list_of_intelligence = list()
 
+"""
+Домашнее задание к лекции 8.«Работа с библиотекой requests, http-запросы»
+Определить кто самый умный(intelligence) из супергероев.
+"""
 def who_is_smartest(list_of_superhero: list):
     list_of_intelligence = list()
     response = requests.get(base_url, 'rb')
