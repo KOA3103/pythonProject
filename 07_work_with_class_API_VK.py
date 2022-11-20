@@ -1,21 +1,45 @@
 import requests
 from pathlib import Path
 from urllib.parse import urlencode
-from my_token import TOKEN_VK, user_id_VK, token_y
+from my_token import token_y
 from pprint import pprint
+import datetime
+import os, sys
+import json
 
 """Работа с классами на примере API VK"""
 
-# list_of_photos = []
+
+def get_tokens_from_file(token_name, file_name ="requiremеnts.txt"):
+    # Чтения токенов пользователя по умолчанию из файла requiremеnts.txt
+    list_of_tokens = {}
+    # token_name = token_name + ":"
+    with open(os.path.join(os.getcwd(), file_name), 'r') as token_file:
+        a = True
+        while a:
+            line_token = token_file.readline()
+            if line_token == '':
+                break
+            else:
+                split_line_token = line_token.split()
+                key = split_line_token[0]
+                key = key[:-1]
+                value = split_line_token[1]
+                # print(key, value)
+                list_of_tokens[key] = value
+    # TOKEN += list_of_tokens[token_id:]
+    TOKEN = list_of_tokens[token_name]
+
+    return TOKEN
 
 
 class VK:
 
-    def __init__(self, access_token, user_id_VK, version='5.131'):
-        self.token = access_token
-        self.id = user_id_VK
+    def __init__(self, TOKEN, version='5.131'):
+        self.token = TOKEN
+        # self.id = user_id_VK
         self.version = version
-        self.params = {'access_token': self.token, 'v': self.version}
+        self.params = {'list_of_tokens': self.token, 'v': self.version}
 
     def get_photos_info(self):
         url = "https://api.vk.com/method/photos.get"
@@ -56,75 +80,82 @@ class VK:
                 list_of_photo.append(item[4])
                 list_of_photos.append(list_of_photo)
             else:  # Name is repeated, it's naming by Date.
+                time_bc = datetime.datetime.fromtimestamp(item[1])
+                list_of_photo.append(str(time_bc.strftime('%d.%m.%Y-%H.%M.%S')) + ".jpg")
                 list_of_photo.append(item[0])
-                list_of_photo.append(str(item[1]) + ".jpg")
                 list_of_photo.append(item[2])
                 list_of_photo.append(item[3])
                 list_of_photo.append(item[4])
                 list_of_photos.append(list_of_photo)
         return list_of_photos
 
-
+file_path_to_y = ''
 class YaUploader:
     URL_FILES_LIST: str = 'https://cloud-api.yandex.net/v1/disk/resources/files'
     URL_FILES_RESOURCES: str = 'https://cloud-api.yandex.net/v1/disk/resources'
     URL_UPLOAD_LINK: str = 'https://cloud-api.yandex.net/v1/disk/resources/upload'
-    header = {"Content-Type": "application/json", "Authorization": f"OAuth {token_y}"}
 
-    # file_path_to_y = ''
-    def __init__(self, token: str):
-        self.token = token
+    def __init__(self, TOKEN: str):
+        self.token = TOKEN
 
     def create_folder_into_YaDisk(self):
         """Создание папки. \n path: Путь к создаваемой папке."""
-        file_path_to_y = input("Введите название папки куда загрузить файлы: ")
-        target_folder = requests.put(f'{self.URL_FILES_RESOURCES}?path={file_path_to_y}', headers=self.header)
+        folder_path_to_y = input("Введите название папки куда загрузить файлы: ")
+        headers = {"Content-Type": "application/json", "Authorization": f"OAuth {self.token}"}
+        target_folder = requests.put(f'{self.URL_FILES_RESOURCES}?path={folder_path_to_y}', headers=headers)
         if target_folder.status_code == 201:
-            print(f"Папка <{file_path_to_y}> создана! Статус {target_folder.status_code}.")
+            print(f"Папка {folder_path_to_y} создана! Статус {target_folder.status_code}.\n"
+                  f" Загрузка началась!")
         else:
-            print(f'{target_folder.json().get("message")} Статус {target_folder.status_code}.')
-        return file_path_to_y
+            print(f'{target_folder.json().get("message")}! Статус {target_folder.status_code}.\n'
+                  f' Загрузка будет выполнена в эту папку!')
+        return folder_path_to_y
 
-    # def _get_upload_link(self, file_path_to_y: str = "new"):  # Tут можно выбрать куда загружать файлы.
-    #     params = {"path": file_path_to_y, "overwrite": "true"}
-    #     response = requests.get(self.URL_UPLOAD_LINK, headers=self.header, params=params)
-    #     upload_url = response.json().get("href")
-    #     return upload_url
 
-    def upload(self, savefile, replace=False):
+    def upload(self, replace=False):
 
         """Метод загружает файлы по списку file_list на яндекс диск"""
-        # sourse_url = "https://cloud-api.yandex.net/v1/disk/resources/upload?path=%2F1%2F&url=https%3A%2F%2Fsun9-70.userapi.com%2Fimpf%2FtrrtxJzEDNIpfLsrO8aBDeIRBR6Bg8J10LOKmQ%2FwrNSyGe3TKU.jpg%3Fsize%3D506x479%26quality%3D96%26sign%3D6e3cfb78fa04ce181be9a465676b349d%26c_uniq_tag%3DBnWamsQDEcoeNNLS-EkVCMjQHNqA5q1Zwi1k8-llbMc%26type%3Dalbum&disable_redirects=false"
-
+        headers = {"Content-Type": "application/json", "Authorization": f"OAuth {token_y}"}
+        file_path_to_y = self.create_folder_into_YaDisk()
+        count = 0
+        josn_file =[]
         for i in vk.get_photos_info():
             file_name = str(i[0])
-            file_name_with_path = (f'{self.create_folder_into_YaDisk()}/{file_name}')
-            # Запрос URL для загрузки.
-            # upload_link = self._get_upload_link()
-            res = requests.get(f'{self.URL_FILES_RESOURCES}/{file_name_with_path}?path={savefile}&overwrite={replace}', headers=self.header).json()
-            with open(i[-1], 'rb') as file_obj:
-                try:
-                    # Загрузка файла на полученный URL
-                    response = requests.put(res['href'], data=file_obj)
-                    if response.status_code == 201:
-                        print(f"Файл <{file_name}>\n  загружен на Яндекс.Диск.\n")
-                except KeyError:
-                    print(res)
+            file_name_with_path = (f'{file_path_to_y}/{file_name}')
+            params = {'path': file_name_with_path,  # <- savefile куда сохраняем на Я.Д.
+                      'url': i[-1],  # <- ссылка из ВК.
+                      'overwrite': 'false'}
+            res = requests.get(self.URL_FILES_RESOURCES, headers=headers, params=params).json()
+            try:
+                up_file = requests.post(self.URL_UPLOAD_LINK, headers=headers, params=params)
+                requests_json = requests.get(self.URL_UPLOAD_LINK, headers=headers, params=params).json()
+                if up_file.status_code == 202:
+                    print(f'Файл {file_name} загружен на Яндекс.Диск')
+                    count += 1
+                    josn_file.append({"file_name": file_name, "size": i[-2]})
+            except KeyError:
+                pprint(res)
+        pprint(f'Всего: {count}')
+
+        with open("data_files_uploded.json", "w") as write_file:
+            json.dump(josn_file, write_file)
+        pprint(f"Файл data_files_uploded.json создан.\n {josn_file}")
 
 
 
-# Инициализация токенов.
-vk = VK(TOKEN_VK, user_id_VK)
-y_uploader = YaUploader(token_y)
-
-# Получаем список [(Likes, Date, Type, URL), (....), (....)].
-# pprint(vk.get_photos_info())
-
-# Создаёт папку на Яндекс.Диске.
-# y_uploader.create_folder_into_YaDisk()  # Путь (название папки) указываем в кавычках.
-
-# Загружает все файлы из папки проекта upload_folder можно выбоать др. указав путь.
-# y_uploader.upload('upload_folder')
+# Инициализация токенов из файла requiremеnts.txt по ключам токунов TOKEN_VK:  и token_y: .
+vk = VK(get_tokens_from_file('TOKEN_VK'))
+y_uploader = YaUploader(get_tokens_from_file('token_y'))
 
 
-y_uploader.upload("4.jpg")
+if __name__ == '__main__':
+
+
+    # Получаем список [(Likes, Date, Type, URL), (....), (....)].
+    # pprint(vk.get_photos_info())
+
+    # Создаёт папку на Яндекс.Диске.
+    # y_uploader.create_folder_into_YaDisk()  # Путь (название папки) указываем в кавычках.
+
+    # Загружает все аватарки из профиля ВК на Ян.Ди.
+    y_uploader.upload()
