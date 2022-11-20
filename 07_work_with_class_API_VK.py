@@ -1,6 +1,4 @@
 import requests
-from pathlib import Path
-from urllib.parse import urlencode
 from my_token import token_y
 from pprint import pprint
 import datetime
@@ -100,12 +98,11 @@ class YaUploader:
 
     def create_folder_into_YaDisk(self):
         """Создание папки. \n path: Путь к создаваемой папке."""
-        folder_path_to_y = input("Введите название папки куда загрузить файлы: ")
+        folder_path_to_y = input("Введите название папки: ")
         headers = {"Content-Type": "application/json", "Authorization": f"OAuth {self.token}"}
         target_folder = requests.put(f'{self.URL_FILES_RESOURCES}?path={folder_path_to_y}', headers=headers)
         if target_folder.status_code == 201:
-            print(f"Папка {folder_path_to_y} создана! Статус {target_folder.status_code}.\n"
-                  f" Загрузка началась!")
+            print(f"Папка {folder_path_to_y} создана! Статус {target_folder.status_code}")
         else:
             print(f'{target_folder.json().get("message")}! Статус {target_folder.status_code}.\n'
                   f' Загрузка будет выполнена в эту папку!')
@@ -155,7 +152,7 @@ if __name__ == '__main__':
     # pprint(vk.get_photos_info())
 
     # Создаёт папку на Яндекс.Диске.
-    # y_uploader.create_folder_into_YaDisk()  # Путь (название папки) указываем в кавычках.
+    # y_uploader.create_folder_into_YaDisk()
 
     # Загружает все аватарки из профиля ВК на Ян.Ди.
     y_uploader.upload()
