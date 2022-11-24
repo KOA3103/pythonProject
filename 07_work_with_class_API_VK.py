@@ -1,34 +1,38 @@
+# -*- coding: utf-8 -*-
 import requests
 from pprint import pprint
 import datetime
 import os
 import json
+from my_token import token_y, TOKEN_VK
 
 """Работа с классами на примере API VK"""
 
-def get_tokens_from_file(token_name, file_name ="requiremеnts.txt"):
-    # Чтения токенов пользователя по умолчанию из файла requiremеnts.txt
-    list_of_tokens = {}
-    with open(os.path.join(os.getcwd(), file_name), 'r') as token_file:
-        a = True
-        while a:
-            line_token = token_file.readline()
-            if line_token == '':
-                break
-            else:
-                split_line_token = line_token.split()
-                key = split_line_token[0]
-                key = key[:-1]
-                value = split_line_token[1]
-                list_of_tokens[key] = value
-    TOKEN = list_of_tokens[token_name]
-    return TOKEN
+token_y = token_y
+TOKEN_VK = TOKEN_VK
+# def get_tokens_from_file(token_name, file_name=r"C:\Users\KOA\Documents\Drive licence\Tokens.txt"):
+#     # Чтения токенов пользователя по умолчанию из файла requiremеnts.txt
+#     list_of_tokens = {}
+#     with open(os.path.join(os.getcwd(), file_name), 'r') as token_file:
+#         a = True
+#         while a:
+#             line_token = token_file.readline()
+#             if line_token == '':
+#                 break
+#             else:
+#                 split_line_token = line_token.split()
+#                 key = split_line_token[0]
+#                 key = key[:-1]
+#                 value = split_line_token[1]
+#                 list_of_tokens[key] = value
+#     TOKEN = list_of_tokens[token_name]
+#     return TOKEN
 
 
 class VK:
 
-    def __init__(self, TOKEN, version='5.131'):
-        self.token = TOKEN
+    def __init__(self, TOKEN_VK, version='5.131'):
+        self.token = TOKEN_VK
         # self.id = user_id_VK
         self.version = version
         self.params = {'list_of_tokens': self.token, 'v': self.version}
@@ -43,6 +47,7 @@ class VK:
         }
         response = requests.get(url, params=params)
         response_json = response.json()["response"]["items"]
+        print(response_json)
         list_of_links_avatar_photo = list()
         for photo in response_json:
             sorted(photo)
@@ -52,7 +57,7 @@ class VK:
                     (photo['likes']['count'], photo['date'], sizes["width"], sizes["type"], sizes["url"]))
             list_of_sizes_avatar_photo = sorted(list_of_sizes_avatar_photo, key=lambda type: type[2])
             list_of_links_avatar_photo.append(list_of_sizes_avatar_photo[-1])
-        # Naming of files by attaching extention JPG to Like or Date.
+        # Naming of file31"s by attaching extention JPG to Like or Date.
         list_of_photos = []
         # Поиск повторяющихся элементов в списке (множестве) по индексу во всех списках (множествах).
         for item in list_of_links_avatar_photo:
@@ -81,13 +86,14 @@ class VK:
                 list_of_photos.append(list_of_photo)
         return list_of_photos
 
+
 class YaUploader:
     URL_FILES_LIST: str = 'https://cloud-api.yandex.net/v1/disk/resources/files'
     URL_FILES_RESOURCES: str = 'https://cloud-api.yandex.net/v1/disk/resources'
     URL_UPLOAD_LINK: str = 'https://cloud-api.yandex.net/v1/disk/resources/upload'
 
-    def __init__(self, TOKEN: str):
-        self.token = TOKEN
+    def __init__(self, token_y: str):
+        self.token = token_y
 
     def create_folder_into_YaDisk(self):
         """Создание папки. \n path: Путь к создаваемой папке."""
@@ -101,14 +107,13 @@ class YaUploader:
                   f' Загрузка будет выполнена в эту папку!')
         return folder_path_to_y
 
-
     def upload(self, replace=False):
 
         """Метод загружает файлы по списку file_list на яндекс диск"""
         headers = {"Content-Type": "application/json", "Authorization": f"OAuth {self.token}"}
         file_path_to_y = self.create_folder_into_YaDisk()
         count = 0
-        josn_file =[]
+        josn_file = []
         for i in vk.get_photos_info():
             file_name = str(i[0])
             file_name_with_path = (f'{file_path_to_y}/{file_name}')
@@ -131,15 +136,11 @@ class YaUploader:
         pprint(f"Файл data_files_uploded.json создан.\n {josn_file}")
 
 
-
 # Инициализация токенов из файла requiremеnts.txt по ключам токунов TOKEN_VK:  и token_y: .
-vk = VK(get_tokens_from_file('TOKEN_VK'))
-y_uploader = YaUploader(get_tokens_from_file('token_y'))
-
+vk = VK(TOKEN_VK)
+y_uploader = YaUploader(token_y)
 
 if __name__ == '__main__':
-
-
     # Получаем список [(Likes, Date, Type, URL), (....), (....)].
     # pprint(vk.get_photos_info())
 
